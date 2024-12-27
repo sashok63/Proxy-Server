@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -O2 -pthread -pedantic -fsanitize=address -fsanitize=undefined
+CFLAGS = -Wall -Wextra -O2 -pthread -pedantic -lssl -lcrypto -fsanitize=address -fsanitize=undefined
 
 # Target executable
 TARGET = prx

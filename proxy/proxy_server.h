@@ -7,18 +7,20 @@
 #include <strings.h>
 #include <time.h>
 #include <errno.h>
-#include <setjmp.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <signal.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <fcntl.h>
 #include <netdb.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/select.h>
 #include <sys/wait.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+// #include <openssl/ssl.h>
+// #include <openssl/err.h>
 
 #define PORT 8080
 #define BUFFER_SIZE 4096
@@ -38,12 +40,15 @@ struct client_info
 int init_proxy(int argc, char const *argv[]);
 void *handle_client(void *arg);
 int parse_request(const char *data, char *method, char *url, char *host, char *path);
+void sanitize_headers(char *buffer);
+void replace_header(char *buffer, const char *header_name, const char *replacement);
 int resolve_host(const char *host, struct sockaddr_in *proxy_addr);
-int forward_request_to_server(const char *request, int proxy_socket);
-int forward_response_to_client(int proxy_socket, int client_socket);
-int handle_proxy_communication(int proxy_socket, int client_socket, const char *request);
+int connect_to_proxy(const char *host, int port);
+int handle_proxy_communication(int proxy_socket, int client_socket, const char *requset);
 int socket_cleanup(int socket);
+void forward_traffic(int client_socket, int proxy_socket);
 void send_error_response(int client_socket, const char *message);
 void setup_signal(int signal, void (*handler)(int, siginfo_t *, void *));
 void handle_shutdown(int signo, siginfo_t *info, void *context);
+
 #endif // PROXY_SERVER_H
