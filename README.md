@@ -1,8 +1,5 @@
 # Proxy
-Proxy Server with pthreads for handling HTTP requests
-
-## Still in work
-* Support for HTTPS requests
+Proxy Server with pthreads for handling HTTP and HTTPS requests
 
 ## Building 
 ```bash
@@ -12,9 +9,10 @@ make
 ## Usage
 ```bash
 
-./server <port> - on Linux to open the server on port
+./server <port(optional)> - on Linux to open the server on port (default port 8080)
 
 curl -x http://localhost:<port> http://<url> - send request
+curl -x http://localhost:<port> https://<url> - send request
 ```
 
 ### Server
